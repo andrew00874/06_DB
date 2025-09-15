@@ -101,7 +101,6 @@ SELECT NOW(),
 		NOW() + INTERVAL 1 minute,
 		NOW() + INTERVAL 1 second;
         
-		NOW() + INTERVAL 1 HOUR,
         
 -- 어제, 현재 시간, 내일, 모레 조회
 
@@ -113,3 +112,34 @@ SELECT DATEDIFF('2025-09-15', '2025-09-14');
 -- 근무일 수 조회                         현재 시간(날짜) 입사한 날짜
 SELECT full_name, hire_date, datediff(curdate(), hire_date)
 FROM employees;
+
+-- 컬럼명 별칭 지정하기
+/****************
+컬럼명 별칭 지정하기
+1) 컬럼명 AS 별칭 : 문자 OK, 띄어쓰기 X, 특수문자 X
+2) 컬럼명 AS `별칭` : 문자 OK, 띄어쓰기 OK, 특수문자 OK
+3) 컬럼명 별칭 : 문자 OK, 띄어쓰기 X, 특수문자 X
+4) 컬럼명 `별칭` : 문자 OK, 띄어쓰기 OK, 특수문자 OK
+
+`` 이나 "" 사용 가능
+대/소문자 구분
+*****************/
+
+-- 별칭 이용해서 근무일수로 컬럼명 설정 후 조회하기
+SELECT full_name, hire_date, datediff(curdate(), hire_date) AS `근무일수`
+FROM employees;
+
+-- 1. employees 테이블에서 사번, 이름 이메일로 해당컬럼 데이터 조회
+-- (별칭에서 as 사용하지 않고 조회)
+SELECT emp_id 사번, full_name 이름, email
+FROM employees;
+
+-- 2. employees 테이블에서 이름, 급여, 연봉(급여*12) 로 해당칼럼 데이터 조히
+-- (별칭에서 as `` 사용하고 조회)
+SELECT full_name as `이름`, salary as `급여`, (salary * 12) as `연봉`
+FROM employees;
+
+-- 3. positions 테이블에서 직급명, 최소급여, 최대급여, 급여차이 명칭으로
+-- 해당 컬럼 데이터 조회 (별칭에서 as "" 사용하고 조회)
+SELECT position_name as "직급명", ceil(min_salary) as "최소급여", ceil(max_salary) as "최대급여",  ceil(max_salary - min_salary) as "급여차이"
+FROM positions;
