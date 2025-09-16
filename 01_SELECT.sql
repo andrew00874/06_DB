@@ -223,6 +223,9 @@ WHERE EMP_CODE LIKE 'EMP___';
 WHERE절
 AND OR BETWEEN IN()
 *********************/
+SELECT EMP_CODE, FULL_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY >= 40000000 AND SALARY <= 70000000;
 
 SELECT EMP_CODE, FULL_NAME, SALARY
 FROM EMPLOYEES
@@ -265,6 +268,58 @@ WHERE DEPT_ID IN (2,4,5);
 -- 부서코드가 2, 4, 5 인 사원을 제외
 SELECT FULL_NAME, DEPT_ID, SALARY
 FROM EMPLOYEES
-WHERE DEPT_ID NOT IN (2,4,5);
+WHERE DEPT_ID NOT IN (2,4,5); 
 
+SELECT FULL_NAME, DEPT_ID, SALARY
+FROM EMPLOYEES
+WHERE DEPT_ID NOT IN (2,4,5) OR dept_id IS NULL;
+-- -> dept_id 가 2,4,5 가 아니거나, NULL 인 경우 조회
+ 
+ 
+/*************************************
+OREDER BY 절
+ - SELECT 문의 조회 결과 (RESULT SET)를 정렬할 때 사용하는 구문
+ 
+SELECT 구문에서 가장 마지막에 해석됨
+[작성법]
+SELECT 컬럼명 AS 별칭, 컬럼명, 컬럼명, ...
+FROM 테이블명
+WHERE 조건식
+ORDER BY 컬럼명 | 별칭 | 컬럼 순서 [오름/내림 차순]
+	* 컬럼이 오름차순인지 내림차순인지 작성되지 않았을 때는 기본으로 오름차순 정렬
+    * 오름차순 ASC (ASCENDING)
+    * 내림차순 DESC (DESCENDING)
+**********************************/
 
+use employee_management;
+-- employees 테이블에서 모든 사원의 이름, 급여 조회
+-- 단, 급여 오름차순으로 정렬
+SELECT full_name, salary
+FROM employees
+ORDER BY salary; -- ASC 기본값
+
+SELECT full_name, salary
+FROM employees
+ORDER BY salary ASC;
+
+SELECT full_name, salary
+FROM employees
+ORDER BY salary DESC;
+
+SELECT emp_id, full_name, salary
+FROM employees
+WHERE salary between 40000000 AND 100000000
+ORDER BY FULL_NAME DESC;
+
+/* NULL 값 정렬 처리 */
+-- ASC  : NULL 값 최상위
+-- DESC : NULL 값 최하위
+/*3*/SELECT full_name, dept_id as 부서코드
+/*1*/from employees
+/*2*/where dept_id = 4
+/*4*/order by 부서코드;
+
+/*3*/SELECT full_name, dept_id as 부서코드
+/*1*/from employees
+/*2*/where 부서코드 = 4
+/*4*/order by 부서코드;
