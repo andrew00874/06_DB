@@ -143,3 +143,128 @@ FROM employees;
 -- 해당 컬럼 데이터 조회 (별칭에서 as "" 사용하고 조회)
 SELECT position_name as "직급명", ceil(min_salary) as "최소급여", ceil(max_salary) as "최대급여",  ceil(max_salary - min_salary) as "급여차이"
 FROM positions;
+
+
+use employee_management;
+select distinct dept_id
+from employees;
+
+/***********************
+WHERE 절
+테이블에서 조건을 충족하는 행을 조회할 때 사용
+WHERE 절에는 조건식(true/false)만 작성
+
+비교 연산자 : >, <, >=, <=, =(같다), !=(같지 않다), <>(같지 않다)
+논리 연산자 : AND, OR, NOT
+
+SELECT 컬럼명, 컬럼명, ...
+FROM 테이블명
+WHRE 조건식;
+***********************/
+-- employees 테이블에서 급여가 300만원 초과하는 사원의
+-- 사번, 이름, 급여, 부서코드 조회
+/*3*/SELECT emp_id, full_name, salary, dept_id
+/*1*/FROM employees
+/*2*/WHERE salary > 3000000;
+/* FROM 절에 지정된 테이블에서
+** WHERE 절로 행을 먼저 추려내고, 추려진 결과 행들 중에서
+*  SELECT 절에 원하는 컬럼만 조회 */
+
+-- employees 테이블에서 연봉이 5천만원 이하인 사원의 사번 이름 연봉 조회
+SELECT emp_id, full_name, salary
+FROM employees
+WHERE salary <= 50000000;
+
+-- employees 테이블에서 부서 코드가 2번이 아닌 사원의 이름, 부서코드, 전화번호 조회
+SELECT full_name, dept_id, phone
+FROM employees
+WHERE dept_id != 2;
+
+/* 연결 연산자 CONCAT() */
+
+SELECT CONCAT(emp_id, full_name) as 사번이름연결
+from employees;
+
+
+/*********************
+       LIKE 절
+*********************/
+
+-- EMPLOYEES 테이블에서 성이 '김' 씨인 사원의 사번, 이름 조회
+SELECT EMP_ID, FULL_NAME
+FROM EMPLOYEES
+WHERE FULL_NAME LIKE '김%';
+
+-- EMPLOYEES 테이블에서 FULL_NAME 이름에 '민'이 포함되는 사원의 사번, 이름 조회
+SELECT EMP_ID, FULL_NAME
+FROM EMPLOYEES
+WHERE FULL_NAME LIKE '%민%';
+
+SELECT *
+FROM EMPLOYEES;
+
+-- EMPLOYEES 테이블에서 전화번호가 010 으로 시작하는 사원의 이름, 전화번호 조회
+SELECT FULL_NAME, PHONE
+FROM EMPLOYEES
+WHERE PHONE LIKE '010%'; 
+
+-- EMPLOYEES 테이블에서 EMAIL 의 아이디가 3글자인 사원의 이름, 이메일 조회
+SELECT FULL_NAME, EMAIL
+FROM EMPLOYEES
+WHERE EMAIL LIKE '___@%';
+
+-- EMPLOYEES 테이블에서 사원코드가 EMP로 시작하고 EMP 포함해서 총 6자리인 사원 조회
+SELECT FULL_NAME, EMP_CODE
+FROM EMPLOYEES
+WHERE EMP_CODE LIKE 'EMP___';
+
+
+/**********************
+WHERE절
+AND OR BETWEEN IN()
+*********************/
+
+SELECT EMP_CODE, FULL_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY BETWEEN 40000000 AND 70000000;
+
+SELECT EMP_CODE, FULL_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY NOT BETWEEN 40000000 AND 70000000;
+
+SELECT FULL_NAME, HIRE_DATE
+FROM EMPLOYEES
+WHERE HIRE_DATE BETWEEN '2020-01-01' AND '2020-12-31';
+
+SELECT FULL_NAME, DATE_OF_BIRTH
+FROM EMPLOYEES
+WHERE DATE_OF_BIRTH BETWEEN '1980-01-01' AND '1989-12-31';
+
+SELECT FULL_NAME, DATE_OF_BIRTH
+FROM EMPLOYEES
+WHERE DATE_OF_BIRTH LIKE '198_______';
+
+-- ORER 절 WHERE 응용 IN() 절 JOIN 문
+
+-- EMPLOYEES 테이블에서
+-- 부서코드가 2, 4, 5 인 사원의
+-- 이름, 부서코드, 급여 조회
+SELECT FULL_NAME, DEPT_ID, SALARY
+FROM EMPLOYEES
+WHERE DEPT_ID = 2
+OR DEPT_ID = 4
+OR DEPT_ID = 5;
+
+-- 컬럼의 값이 () 내 값과 일치하면 true
+
+SELECT FULL_NAME, DEPT_ID, SALARY
+FROM EMPLOYEES
+WHERE DEPT_ID IN (2,4,5);
+
+-- EMPLOYEES 테이블에서
+-- 부서코드가 2, 4, 5 인 사원을 제외
+SELECT FULL_NAME, DEPT_ID, SALARY
+FROM EMPLOYEES
+WHERE DEPT_ID NOT IN (2,4,5);
+
+

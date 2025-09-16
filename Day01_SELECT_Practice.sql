@@ -62,14 +62,14 @@ WHERE CAPACITY >= 25;
 -- 이름, 학과번호, 주소를 조회하시오.
 SELECT STUDENT_NAME, DEPARTMENT_NO, STUDENT_ADDRESS
 FROM STUDENT
-WHERE DEPARTMENT_NO != 001;
+WHERE DEPARTMENT_NO != '001';
 
 -- 문제 12
 -- GRADE 테이블에서 성적(POINT)이 4.0 이상인 성적 데이터의 
 -- 학기번호, 과목번호, 학번, 성적을 조회하시오.
 SELECT *
 FROM GRADE
-WHERE POINT >= 4.0;
+WHERE POINT >= '4.0';
 
 -- 문제 13
 -- STUDENT 테이블에서 2005년에 입학한 학생의 
@@ -97,7 +97,7 @@ WHERE CLASS_TYPE = '전공필수';
 -- 이름, 주소, 입학일을 조회하시오.
 SELECT STUDENT_NAME, STUDENT_ADDRESS, ENTRANCE_DATE
 FROM STUDENT
-WHERE SUBSTR(STUDENT_ADDRESS, 1, 3) = '서울시';
+WHERE STUDENT_ADDRESS LIKE '서울시%';
 
 -- 문제 17
 -- GRADE 테이블에서 성적이 3.0 이상 4.0 미만인 성적 데이터의 
