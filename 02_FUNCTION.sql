@@ -102,3 +102,64 @@ COUNT(컬럼명) : 지정된 컬럼 값이 NULL 이 아닌 행의 개수를 반�
 COUNT(DISTINCT 컬럼명) : 지정된 컬럼에서 중복값을 제외한 행의 개수를 반환
 						(NULL인 행 미포함)
 *********************************/
+
+-- 모든 사원의 급여 합
+SELECT sum(salary)
+FROM employees;
+
+-- 모든 활성 사원의 급여 합
+-- salary  employement_status = 'Active'
+SELECT sum(salary)
+FROM EMPLOYEES
+WHERE EMPLOYMENT_STATUS = 'Active';
+
+-- 2020년 이후 (2020년 포함) 입사자들의 급여 합 조회
+SELECT SUM(SALARY)
+FROM EMPLOYEES
+WHERE YEAR(HIRE_DATE) >= 2020;
+
+SELECT AVG(SALARY)
+FROM EMPLOYEES;
+
+SELECT FLOOR(AVG(SALARY))
+FROM EMPLOYEES
+WHERE EMPLOYMENT_STATUS = 'Active';
+
+SELECT FLOOR(SUM(SALARY)) AS '급여 합계', FLOOR(AVG(SALARY)) AS '평균 급여'
+FROM EMPLOYEES;
+
+-- 모든 사원 중
+-- 가장 빠른 입사일, 최근 입사일
+-- 이름 오름차순에서 제일 먼저 작성되는 이름
+-- 마지막에 작성되는 이름
+
+SELECT MIN(HIRE_DATE) AS `최초 입사일`,
+		MAX(HIRE_DATE) AS `최근 입사일`,
+        MIN(FULL_NAME) AS `가나다순 첫번째`,
+        MAX(FULL_NAME) AS `가나다순 마지막`
+FROM EMPLOYEES
+WHERE EMPLOYMENT_STATUS = 'ACTIVE';
+
+SELECT *
+FROM EMPLOYEES;
+-- --------COUNT 문제--------
+-- EMPLOYEES 테이블 전체 활성 사원 수
+SELECT COUNT(*)
+FROM EMPLOYEES
+WHERE EMPLOYMENT_STATUS = 'ACTIVE';
+-- EMPLOYEES 테이블에서 부서 코드가 DEV 인 사원의 수
+-- JOIN ON
+-- WHERE AND
+SELECT COUNT(*)
+FROM EMPLOYEES E JOIN DEPARTMENTS D ON E.DEPT_ID = D.DEPT_ID
+WHERE D.DEPT_CODE = 'DEV';
+-- 전화번호가 있는 사원 수 COUNT(*)
+-- 전화번호가 있는 사원 수
+-- NULL 이 아닌 행의 수만 카운트
+SELECT COUNT(*)
+FROM EMPLOYEES
+WHERE PHONE IS NOT NULL;
+-- 테이블에 존재하는 부서코드의 수를 조회 DEPT_CODE 중복없이 조회
+-- JOINT DEPARTMENTS DEPT_ID
+SELECT DISTINCT COUNT(DEPT_CODE)
+FROM DEPARTMENTS;
