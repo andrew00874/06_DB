@@ -268,12 +268,12 @@ ORDER BY avg(delivery_fee);
 
 -- 가게별로 메뉴가 몇 개씩 존재하는지 조회
 -- 가게명, 카테고리 메뉴 개수 조회
-SELECT s.name, s.category, count(*) as 메뉴개수
+SELECT S.ID, count(*) as 메뉴개수
 FROM stores s, menus m
 WHERE s.id = m.store_id
-GROUP BY s.id, s.category;
+GROUP BY S.ID;
 
-
+use delivery_app;
 
 
 
