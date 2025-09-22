@@ -88,8 +88,20 @@ VALUES
 -- INSERT 필수 컬럼만 입력 -> 모든 컬럼에 데이터를 넣지 않고
 -- 컬럼명칭 옆에 NOT NULL 인 컬럼명칭만 지정하여 데이터를 넣을 수 있음
 -- 주의할 점 : NOT NULL은 필수로 데이터를 넣어야하는 공간이기 때문에 생략 불가능
--- INSERT INTO 테이블이름 VALUES (필수컬럼명1, 필수컬럼명2, 필수컬럼명3, ...)
+
+-- 하나의 INSERT 구문 추가하는 방법
+-- INSERT INTO 테이블이름 (필수컬럼명1, 필수컬럼명2, 필수컬럼명3, ...)
+-- 				VALUES (데이터, 데이터, 데이터, ...);			
+	
+-- 두개 이상의 INSERT 구문 추가하는 방법
+-- INSERT INTO 테이블이름 (필수컬럼명1, 필수컬럼명2, 필수컬럼명3, ...)
+-- 				VALUES (데이터1, 데이터1, 데이터1, ...),
+-- 				VALUES (데이터2, 데이터2, 데이터2, ...),
+-- 				VALUES (데이터3, 데이터3, 데이터3, ...);
 -- , 로 구분하여 여러 행을 한 번에 입력 후, 데이터를 저장할 수 있다.
+-- AUTO_INCREMENT 가 설정된 컬럼은 번호가 자동으로 부여될 것이고,
+-- 이외 컬럼데이터는 모두 NULL 이나 0의 값으로 데이터가 추가될 것이다.
+-- 여기서 DEFAULT 설정된 데이터는 DEFAULT 로 설정된 기본 데이터가 추가될 것이다.
 -- =================================
 
 -- =============================================
@@ -108,5 +120,194 @@ INSERT INTO MEMBER VALUES (NULL ,'user_basic1', 'basicpass123', 'basic1@email.co
 (NULL ,'user_basic2', 'basicpass456', 'basic2@email.com', '기본유저2', NULL, NULL, NULL, NULL, DEFAULT, DEFAULT),
 (NULL ,'user_basic3', 'basicpass789', 'basic3@email.com', '기본유저3', NULL, NULL, NULL, NULL, DEFAULT, DEFAULT);
 
+INSERT INTO MEMBER (username, password, email, name)
+VALUES ('user_basic1', 'basicpass123', 'basic1@email.com', '기본유저1'),
+('user_basic2', 'basicpass456', 'basic2@email.com', '기본유저2'),
+('user_basic3', 'basicpass789', 'basic3@email.com', '기본유저3');
+
+-- =============================================
+-- INSERT INTO 테이블명 (컬럼명, ...) VALUES(데이터, ...)
+-- 특정 컬럼만 지정하여 데이터 저장 (필수 + 선택사항)
+-- =============================================
+
+/*
+CREATE TABLE member (
+    member_id INT AUTO_INCREMENT PRIMARY KEY,
+*   username VARCHAR(50) NOT NULL UNIQUE,
+*   password VARCHAR(255) NOT NULL,
+*   email VARCHAR(100) NOT NULL UNIQUE,
+*   name VARCHAR(50) NOT NULL,
+    phone VARCHAR(20),
+    birth_date DATE,
+    gender ENUM('M', 'F', 'Other'),
+    address TEXT,
+    join_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('ACTIVE', 'INACTIVE', 'SUSPENDED') DEFAULT 'ACTIVE'
+);
+  * 표시한 컬럼은 INSERT 할 때 반드시 채워야 하는 부분임.
+*/
+INSERT INTO member (username, password, email, name, phone, gender)
+			values ('admin_user', 'admin_pass', 'admin@gmail.com', '관리자', '010-5686-3434', 'M');
+            
+            
 SELECT *
 FROM MEMBER;
+
+INSERT INTO member
+	   VALUES (
+      null, 'sarah_lee', 'passwordabc', 'sarah@example.com', '박미영', '010-3333-9999', '1995-03-10', 'f', '광주시 서구', now(), 'INACTIVE'
+       );
+
+INSERT INTO member
+	   VALUES (
+      null, 'sarah_lee', 'abc1234', 'meyoung@example.com', '오미영', '010-4567-1234', '1998-04-10', 'f', '서울시 서초구', now(), 'ACTIVE'
+       );
+       
+       
+-- =============================================
+-- INSERT 실습문제
+-- =============================================
+
+-- 문제 1: 다음 회원 정보를 주어진 컬럼 순서에 맞춰 INSERT하세요.
+-- 컬럼 순서: password, username, email, name, phone, gender
+-- 회원 데이터: hong123, hong_pass, hong@naver.com, 홍길동, 010-1234-5678, M
+INSERT INTO MEMBER(PASSWORD, USERNAME, EMAIL, NAME, PHONE, GENDER)
+VALUES('HONG123', 'HONG_PASS', 'HONG@NAVER.COM', '홍길동', '010-1234-5678', 'M');
+
+
+-- 문제 2: 필수 컬럼 4개를 다른 순서로 INSERT하세요.
+-- 컬럼 순서: email, name, password, username  
+-- 회원 데이터: kim_student, student123, kim@gmail.com, 김영희
+INSERT INTO MEMBER(EMAIL, NAME, PASSWORD, USERNAME)
+VALUES('KIM@GMAIL.COM', '김영희', 'STUDENT123', 'KIM_STUDENT');
+
+-- 문제 3: 생년월일과 성별을 포함해서 다른 순서로 INSERT하세요
+-- 컬럼 순서: birth_date, username, gender, email, name, password
+-- 회원 데이터: park_teacher, teacher456, park@daum.net, 박철수, 1985-03-15, M
+INSERT INTO MEMBER(BIRTH_DATE, USERNAME, GENDER, EMAIL, NAME, PASSWORD)
+VALUES ('1985-03-15', 'PARK_TEACHER', 'M', 'PARK@DAUM.NET', '박철수', 'TEACHER456');
+
+-- 문제 4: 주소를 포함해서 컬럼 순서를 바꿔 INSERT하세요.
+-- 컬럼 순서: address, phone, birth_date, gender, name, email, password, username
+-- 회원 데이터: lee_manager, manager789, lee@company.co.kr, 이미영, F, 1990-07-20, 010-9876-5432, 서울시 강남구 역삼동
+INSERT INTO member (address, phone, birth_date, gender, name, email, password, username)
+VALUES ('서울시 강남구 역삼동', '010-9876-5432', '1990-07-20', 'F', '이미영', 'lee@company.co.kr', 'manager789', 'lee_manager');
+
+-- 문제 5: 회원 상태를 포함해서 INSERT하세요.
+-- 컬럼 순서: status, gender, username, password, email, name, phone
+-- 회원 데이터: choi_admin, admin999, choi@admin.kr, 최관리, 010-5555-7777, INACTIVE, M
+INSERT INTO member (status, gender, username, password, email, name, phone)
+VALUES ('INACTIVE', 'M', 'choi_admin', 'admin999', 'choi@admin.kr', '최관리', '010-5555-7777');
+
+-- 문제 6: 3명의 회원을 각각 다른 컬럼 순서로 한 번에 INSERT하세요.
+-- 순서: username, password, email, name, phone, gender
+/*
+회원1: jung_user1, pass1234, jung1@kakao.com, 정수민, 010-1111-2222, F
+회원2: kang_user2, pass5678, kang2@nate.com, 강동원, 010-3333-4444, M  
+회원3: yoon_user3, pass9012, yoon3@hanmail.net, 윤서연, 010-5555-6666, F
+*/
+INSERT INTO member (username, password, email, name, phone, gender)
+VALUES
+('jung_user1', 'pass1234', 'jung1@kakao.com', '정수민', '010-1111-2222', 'F'),
+('kang_user2', 'pass5678', 'kang2@nate.com', '강동원', '010-3333-4444', 'M'),
+('yoon_user3', 'pass9012', 'yoon3@hanmail.net', '윤서연', '010-5555-6666', 'F');
+
+
+-- 문제 7: 다음 잘못된 INSERT문을 올바르게 수정하세요.
+-- 잘못된 예제 (실행하지 마세요.):
+-- INSERT INTO member (username, password, email, name, phone) 
+-- VALUES ('010-7777-8888', 'song_user', 'song@lycos.co.kr', 'songpass', '송지효');
+INSERT INTO member (username, password, email, name, phone)
+VALUES ('song_user', 'songpass', 'song@lycos.co.kr', '송지효', '010-7777-8888');	
+
+-- 문제 8: 전화번호와 주소는 제외하고 다른 순서로 INSERT하세요.
+-- 컬럼 순서: gender, birth_date, name, email, username, password
+-- 회원 데이터: oh_student, student321, oh@snu.ac.kr, 오수진, 1995-12-03, F
+INSERT INTO member (gender, birth_date, name, email, username, password)
+VALUES ('F', '1995-12-03', '오수진', 'oh@snu.ac.kr', 'oh_student', 'student321');
+
+-- 문제 9: 모든 컬럼을 포함해서 순서를 바꿔 INSERT하세요.
+-- 컬럼 순서: address, status, gender, birth_date, phone, name, email, password, username
+-- 회원 데이터: han_ceo, ceo2024, han@bizmail.kr, 한대표, 010-8888-9999, 1975-05-25, M, ACTIVE, 부산시 해운대구 우동
+INSERT INTO member (address, status, gender, birth_date, phone, name, email, password, username)
+VALUES ('부산시 해운대구 우동', 'ACTIVE', 'M', '1975-05-25', '010-8888-9999', '한대표', 'han@bizmail.kr', 'ceo2024', 'han_ceo');
+
+-- 문제 10: 5명의 한국 회원을 서로 다른 컬럼 순서로 INSERT하세요.
+
+/*
+회원1: 김민수, minsoo_kim, minpass1, minsoo@gmail.com, 010-1010-2020, M
+회원2: 이소영, soyoung_lee, sopass2, soyoung@naver.com, 010-3030-4040, F
+회원3: 박준혁, junhyuk_park, junpass3, junhyuk@daum.net, 010-5050-6060, M
+회원4: 최유진, yujin_choi, yujinpass4, yujin@hanmail.net, 010-7070-8080, F  
+회원5: 장태현, taehyun_jang, taepass5, taehyun@korea.kr, 010-9090-1010, M
+*/
+
+-- 회원1 순서: name, username, password, email, phone, gender
+
+-- 회원2 순서: username, gender, email, name, password, phone  
+
+-- 회원3 순서: email, phone, username, password, name, gender
+
+-- 회원4 순서: gender, name, phone, email, username, password
+
+-- 회원5 순서: phone, email, gender, username, password, name
+
+-- 회원 1
+INSERT INTO member (name, username, password, email, phone, gender)
+VALUES ('김민수', 'minsoo_kim', 'minpass1', 'minsoo@gmail.com', '010-1010-2020', 'M');
+
+-- 회원 2
+INSERT INTO member (username, gender, email, name, password, phone)
+VALUES ('soyoung_lee', 'F', 'soyoung@naver.com', '이소영', 'sopass2', '010-3030-4040');
+
+-- 회원 3
+INSERT INTO member (email, phone, username, password, name, gender)
+VALUES ('junhyuk@daum.net', '010-5050-6060', 'junhyuk_park', 'junpass3', '박준혁', 'M');
+
+-- 회원 4
+INSERT INTO member (gender, name, phone, email, username, password)
+VALUES ('F', '최유진', '010-7070-8080', 'yujin@hanmail.net', 'yujin_choi', 'yujinpass4');
+
+-- 회원 5
+INSERT INTO member (phone, email, gender, username, password, name)
+VALUES ('010-9090-1010', 'taehyun@korea.kr', 'M', 'taehyun_jang', 'taepass5', '장태현');
+
+-- =============================================
+-- UPDATE 이미 존재하는 데이터의 값을 수정(변경)할 때 사용하는 조작 언어
+-- UPDATE 테이블이름
+-- SET 컬럼명1 = 새롭게 추가할 값1
+-- SET 컬럼명2 = 새롭게 수정할 값2,
+-- ... 
+-- WHERE 조건;
+-- 주의할점 : WHERE 절이 없으면 해당 테이블의 모든 데이터가
+-- 한번에 변경되므로 데이터 유실이 발생할 수 있음
+-- 모든 데이터를 한 번에 변경해야 하는 일이 아닌 한 WHERE 은 사용이 필수다.
+-- UPDATE 는 ERROR 가 거의 일어나지 않음
+-- 왜냐하면 WHERE 에 해당하는 조건을 찾고, 해당하는 조건이 없으면 없는대로
+-- 있으면 있는대로 조건에 맞춰 변경하기 때문이다.
+-- =============================================
+
+-- USERNAME 이 HONG1234인 홍길동 회원의 핸드폰 번호를 변경
+-- WHERE 절을 이용해서 특정 회원 한 명만 정확히 변경하는게 중요!!!!
+
+UPDATE member
+SET PHONE= '010-8765-4321'
+WHERE
+	username = 'hong1234';
+    
+SELECT * FROM MEMBER WHERE USERNAME = 'HONG1234';
+
+UPDATE MEMBER
+SET EMAIL = 'HONG1234@GMAIL.COM',
+	ADDRESS = '인천시 남구'
+WHERE USERNAME = 'HONG1234';
+
+-- 1175 : 모든 데이터를 한 번에 수정하거나 삭제하는 것을 방지하기 위한 MYSQL 안전장치
+-- 안전모드 비 활성화
+SET SQL_SAFE_UPDATES =0;
+
+UPDATE MEMBER
+SET JOIN_DATE = CURRENT_TIMESTAMP;
+
+-- 안전모드 활성화
+SET SQL_SAFE_UPDATES = 1;
