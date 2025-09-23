@@ -311,3 +311,83 @@ SET JOIN_DATE = CURRENT_TIMESTAMP;
 
 -- 안전모드 활성화
 SET SQL_SAFE_UPDATES = 1;
+
+
+-- 문제 1: username이 'mike_wilson'인 이철수 회원의 이메일 주소를 'mike.w@naver.com'으로 변경하세요.
+UPDATE MEMBER
+SET EMAIL = 'MIKE.W@NAVER.COM'
+WHERE USERNAME = 'MIKE_WILSON';
+-- 문제 2: member_id가 5번인 회원의 상태(status)를 'SUSPENDED'로, 주소(address)를 '확인 필요'로 변경하세요.
+UPDATE MEMBER
+SET STATUS = 'SUSPENDED',
+	ADDRESS = '확인필요'
+WHERE MEMBER_ID = 5;
+-- 문제 3: 1990년 이전에 태어난 모든 회원의 상태(status)를 'INACTIVE'로 변경하세요.
+UPDATE MEMBER
+SET STATUS = 'INACTIVE'
+WHERE BIRTH_DATE < '1990-01-01';
+
+-- ===========================================
+-- DELETE
+-- 테이블의 행을 삭제하는 구문
+-- [작성법]
+-- DELETE FROM 테이블명 WHERE 조건설정
+-- 만약 WHERE 조건을 설정하지 않으면 모든 행이 다 삭제됨
+
+-- DELETE 작업을 하기 전에 개발자가 잠시 수행하는 작업 중 하나
+-- 가볍게 저용량의 테이블을 삭제할 경우 많이 사용
+
+-- 테스트용 테이블 생성 (기존 STORES 테이블 복사)
+CREATE TABLE STORES_COPY AS SELECT * FROM STORES;
+-- 테스트용 테이블 삭제
+DROP TABLE STORES_COPY;
+-- ===========================================
+
+USE DELIVERY_APP;
+CREATE TABLE STORES_COPY AS SELECT * FROM STORES;
+SELECT * FROM STORES_COPY_2;
+
+SELECT @SQL_MODE; -- SQL 에서 아무런 설정이 되어있지 않은 상태
+INSERT INTO STORES_COPY_2
+VALUES(NULL, '솔라나치킨', '치킨', '서울시 강남구 테스토스테론 999', '02-000-1234', 4.8, 3000);
+-- member 테이블은 null이 되고, stores_copy null이 안되는 이유
+-- member 테이블은 직접적으로 create table 부터 모두 작성해서 만든 상태인데,
+-- stores_copy는 만들어진 테이블을 가볍게 복제한 형태 (auto_increment) 는 복제되지않는다.
+-- 속성은 추가로 설정해야함
+-- 속성까지 모두 복제하려면
+CREATE TABLE STORES_COPY_2 LIKE STORES; -- 속성 복제
+INSERT INTO STORES_COPY_2 SELECT * FROM STORES; -- 데이터 주입
+DROP TABLE STORES_COPY;
+-- Error Code: 1048. Column 'id' cannot be null	0.000 sec
+SET SQL_SAFE_UPDATES = 0;
+
+SELECT * FROM STORES_COPY_2;
+
+-- 배달비 4000원 이상 매장 삭제
+DELETE
+FROM STORES_COPY_2
+WHERE DELIVERY_FEE >= 4000;
+
+-- 평점 4.5 미만의 치킨집 삭제
+DELETE
+FROM STORES_COPY_2
+WHERE RATING < 4.5 AND CATEGORY = '치킨';
+
+-- 전화번호가 NULL 인 매장들 삭제
+DELETE
+FROM STORES_COPY_2
+WHERE PHONE IS NULL;
+
+DROP TABLE STORES_COPY_2;
+
+
+CREATE TABLE STORE_DEV_TEST LIKE STORES;
+INSERT INTO STORE_DEV_TEST SELECT * FROM STORES;
+
+SELECT * FROM STORE_DEV_TEST;
+
+DELETE FROM STORE_DEV_TEST
+WHERE ID IN (1,2,3);
+
+DELETE FROM STORE_DEV_TEST
+WHERE NAME LIKE '%치킨%';
