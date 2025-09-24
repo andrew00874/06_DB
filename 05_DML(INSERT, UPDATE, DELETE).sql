@@ -391,3 +391,13 @@ WHERE ID IN (1,2,3);
 
 DELETE FROM STORE_DEV_TEST
 WHERE NAME LIKE '%치킨%';
+
+CREATE TABLE stores_copy_2 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone VARCHAR(20),
+    rating DECIMAL(2, 1),
+    delivery_fee INT
+);
